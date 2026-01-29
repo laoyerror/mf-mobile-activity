@@ -16,8 +16,63 @@ export default function Index() {
   useEffect(() => {
     console.log('state changed:', state)
   }, [state])
+
+  let imageBlobSrc = ''
+
+  const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [date, setDate] = useState('')
+
+  const [imageSrc, setImageSrc] = useState<string>('')
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
+
+  function getCroppedImg(imageSrc: string, crop: any): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const image = new Image()
+      image.src = imageSrc
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        canvas.width = crop.width
+        canvas.height = crop.height
+        ctx.drawImage(
+          image,
+          crop.x,
+          crop.y,
+          crop.width,
+          crop.height,
+          0,
+          0,
+          crop.width,
+          crop.height,
+        )
+        // resolve(canvas.toDataURL('image/png'))
+        canvas.toBlob(
+          (blob: any) => {
+            if (!blob) {
+              reject(new Error('Canvas is empty'))
+              return
+            }
+            resolve(blob)
+          },
+          'image/png',
+          1,
+        )
+      }
+    })
+  }
+
+  // const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0]
+  //   if (!file) return
+  //   const url = URL.createObjectURL(file)
+  //   setImageSrc(url)
+  //   setOpen(true)
+  //   // 允许再次选择同一张
+  //   // e.target.value = ''
+  // }
 
   const [isAgreed, setIsAgreed] = useState(false)
 
@@ -34,6 +89,7 @@ export default function Index() {
         name,
         date,
         type: '',
+        // blob: imageBlobSrc,
       },
     })
   }
@@ -44,8 +100,46 @@ export default function Index() {
     })
   }
 
+  const handleCropped = async () => {
+    counterStore.setState((prev) => ({
+      ...prev,
+      blob: imageSrc,
+      crop: croppedAreaPixels,
+    }))
+    setOpen(false)
+  }
+
   return (
     <>
+      <div
+        className={`fixed w-screen h-screen top-0 left-0 bg-[rgba(0,0,0,0.8)] z-9999 px-[0.4rem] box-border transition-all ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+      >
+        <Cropper
+          image={imageSrc!}
+          crop={crop}
+          zoom={zoom}
+          aspect={1.446 / 1}
+          onCropChange={setCrop}
+          onZoomChange={setZoom}
+          onCropComplete={(_, croppedPixels) =>
+            setCroppedAreaPixels(croppedPixels)
+          }
+        />
+        <div className="w-full absolute z-99 px-[0.4rem] box-border left-0 bottom-[0.3rem] text-[0.3rem] text-[#fff] flex justify-between">
+          <button
+            onClick={() => setOpen(false)}
+            className="w-[48%] h-[0.6rem] bg-[#fff] text-[#000] text-[0.35rem] font-medium rounded-[0.35rem]"
+          >
+            cancel
+          </button>
+          <button
+            onClick={handleCropped}
+            className="w-[48%] h-[0.6rem] bg-[#7E0F10] text-[0.35rem] font-medium rounded-[0.35rem]"
+          >
+            confirm
+          </button>
+        </div>
+      </div>
       <div className="home w-[7.5rem] h-[16.21rem] relative">
         <div className="absolute z-99 bottom-[2rem] rounded-[0.2rem] text-[0.28rem] w-[calc(7.5rem-1.2rem)] mx-[0.6rem] bg-[#E4DEDE] px-[0.6rem] py-[0.4rem]">
           <p className="text-[#7E0F10] text-center font-medium exo-2-font">
@@ -69,6 +163,18 @@ export default function Index() {
             onChange={(e) => setDate(e.target.value)}
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] my-[0.2rem]"
           />
+          {/* <p className="exo-2-font text-[#7E0F10] text-center font-medium">
+            Upload One Photo
+          </p>
+          <input
+            type="file"
+            lang="en"
+            accept="image/*"
+            capture="environment"
+            className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] leading-[0.8rem] my-[0.2rem]"
+            onChange={onSelectFile}
+          /> */}
+
           <p className="exo-2-font text-[#7E0F10] text-center font-medium">
             Things We Love Together
           </p>

@@ -1,11 +1,12 @@
 import { useSearch } from '@tanstack/react-router'
 import QRCode from 'react-qr-code'
-import { useEffect, useRef } from 'react'
+import { useStore } from '@tanstack/react-store'
+import { counterStore } from '@/stores/store'
+import { useEffect, useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
 import image03 from '../assets/images/03.png'
 import image05 from '../assets/images/05.png'
 import image06 from '../assets/images/06.png'
-import imageSrc from '../assets/images/poster.png'
 import logo from '../assets/images/menusifu-logo.png'
 import addressIcon from '../assets/svg/address.svg'
 import linkIcon from '../assets/svg/link.svg'
@@ -25,10 +26,55 @@ export default function Poster() {
     }
   }, [searchParams])
 
+  const state = useStore(counterStore)
+
+  const [imageBlobSrc, setImageBlobSrc] = useState('')
+
+  const handleCropped = async () => {
+    const blob = await getCroppedImg(state.blob, state.crop)
+    setImageBlobSrc(URL.createObjectURL(blob))
+  }
+  handleCropped()
+
   let days: number = 520
 
   let link =
     'https://order.mealkeyway.com/customer/release/index?mid=787277474471546776564661747575684c32394870513d3d'
+
+  function getCroppedImg(imageSrc: string, crop: any): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const image = new Image()
+      image.src = imageSrc
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        canvas.width = crop.width
+        canvas.height = crop.height
+        ctx.drawImage(
+          image,
+          crop.x,
+          crop.y,
+          crop.width,
+          crop.height,
+          0,
+          0,
+          crop.width,
+          crop.height,
+        )
+        canvas.toBlob(
+          (blob: any) => {
+            if (!blob) {
+              reject(new Error('Canvas is empty'))
+              return
+            }
+            resolve(blob)
+          },
+          'image/png',
+          1,
+        )
+      }
+    })
+  }
 
   const generate = async () => {
     console.log('ref--', ref)
@@ -81,7 +127,7 @@ export default function Poster() {
           </div>
           <img className="absolute top-0 left-0 z-99" src={image05} />
           <div className="bg-[#fff] absolute top-[1.74rem] left-1/2 transform -translate-x-1/2 z-9 w-[4.75rem] h-[3.285rem]">
-            <img className="w-full h-full" src={imageSrc} />
+            <img className="w-full h-full" src={imageBlobSrc} />
           </div>
         </div>
         <div className="mt-[9.2rem] w-full h-auto px-[1rem] flex">
