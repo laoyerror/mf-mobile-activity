@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import Cropper from 'react-easy-crop'
 import { useStore } from '@tanstack/react-store'
 import { counterStore } from '@/stores/store'
 import x from '../assets/svg/x.svg'
