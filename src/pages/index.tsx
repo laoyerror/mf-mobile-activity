@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import { counterStore } from '@/stores/store'
-import x from '../assets/svg/x.svg'
-import logo from '../assets/images/menusifu-logo.png'
+import logo from '@/assets/images/logo.png'
 
 export default function Index() {
   const navigate = useNavigate()
+
+  const searchParams: any = useSearch({
+    from: '/',
+  })
+  useEffect(() => {
+    console.log('searchParams changed:', searchParams)
+  }, [searchParams])
 
   const state = useStore(counterStore)
 
@@ -22,18 +28,26 @@ export default function Index() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!name || !date || !value) {
+      alert('Please complete the form content')
+      return
+    }
     if (!isAgreed) {
       alert('Please read and agree to the privacy agreement first')
       return
     }
+    counterStore.setState((prev) => ({
+      ...prev,
+      orderUrl: searchParams.orderUrl,
+      restAddress: searchParams.restAddress,
+      restName: searchParams.restName,
+      date,
+      name,
+      value,
+    }))
     console.log(name, date)
     navigate({
       to: '/poster',
-      search: {
-        name,
-        date,
-        type: '',
-      },
     })
   }
 
@@ -55,6 +69,7 @@ export default function Index() {
           </p>
           <input
             type="text"
+            value={name}
             placeholder="Alex & Emma"
             onChange={(e) => setName(e.target.value)}
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] my-[0.2rem]"
@@ -65,6 +80,7 @@ export default function Index() {
           <input
             type="date"
             lang="en"
+            value={date}
             onChange={(e) => setDate(e.target.value)}
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] my-[0.2rem]"
           />
@@ -80,14 +96,15 @@ export default function Index() {
             <option value="" disabled>
               Please select
             </option>
-            <option value="1">Food dates</option>
-            <option value="2">Traveling</option>
-            <option value="3">Shopping</option>
-            <option value="4">Movie nights</option>
-            <option value="5">Working out</option>
-            <option value="6">Gaming</option>
-            <option value="7">Family time</option>
-            <option value="8">Walking the dog</option>
+            <option value="p1">Food dates</option>
+            <option value="p2">Traveling</option>
+            <option value="p3">Shopping</option>
+            <option value="p4">Movie nights</option>
+            <option value="p5">Working out</option>
+            <option value="p6">Gaming</option>
+            <option value="p7">Family time</option>
+            <option value="p8">Walking the dog</option>
+            <option value="p9">Doing nothing, Together is enough</option>
           </select>
 
           <div className="flex">
@@ -115,8 +132,6 @@ export default function Index() {
         </div>
         <div className="absolute w-[7.5rem] bottom-[0.5rem] text-[#fff] font-medium flex justify-center items-center left-1/2 transform -translate-x-1/2">
           <img className="h-[0.45rem]" src={logo} />
-          <img className="h-[0.25rem] mx-[0.25rem]" src={x} />
-          <span className="text-[0.35rem] exo-2-font">Example</span>
         </div>
       </div>
     </>
