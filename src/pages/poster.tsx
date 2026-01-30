@@ -2,14 +2,11 @@ import { useSearch } from '@tanstack/react-router'
 import QRCode from 'react-qr-code'
 import { useEffect, useRef } from 'react'
 import html2canvas from 'html2canvas'
-import image03 from '../assets/images/03.png'
-import image05 from '../assets/images/05.png'
-import image06 from '../assets/images/06.png'
-import imageSrc from '../assets/images/poster.png'
-import logo from '../assets/images/menusifu-logo.png'
-import addressIcon from '../assets/svg/address.svg'
-import linkIcon from '../assets/svg/link.svg'
-import x from '../assets/svg/x.svg'
+import image06 from '@/assets/images/06.png'
+import image07 from '@/assets/images/07.png'
+import imageTitle from '@/assets/images/title.png'
+import addressIcon from '@/assets/svg/address.svg'
+import logo from '@/assets/images/logo.png'
 
 export default function Poster() {
   const ref = useRef<HTMLDivElement>(null)
@@ -52,87 +49,84 @@ export default function Poster() {
   }
 
   const share = () => {
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/share',
-      '_blank',
-    )
+    // window.open(
+    //   'https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/share',
+    //   '_blank',
+    // )
+    window.location.href =
+      'fb://facewebmodal/f?href=' +
+      encodeURIComponent(
+        'https://www.facebook.com/sharer/sharer.php?u=https://example.com',
+      )
   }
 
   return (
     <>
       <div
         ref={ref}
-        className="poster w-full h-auto text-[0.22rem] text-[#000] pt-[0.5rem] pb-[1rem] box-border"
+        className="poster relative z-1 w-[7.5rem] h-[16.21rem] text-[0.22rem] text-[#000] pt-[0.5rem] pb-[1rem] box-border"
       >
-        <img src={image03} />
-        <div className="relative">
-          <div className="absolute tracking-wide font-bold flex justify-center items-center top-[1.1rem] left-1/2 transform -translate-x-1/2 z-100 w-[4.5rem] text-[0.35rem] exo-2-font">
-            Alex <img className="h-[0.35rem] mx-[0.2rem]" src={image06} /> Emma
-          </div>
-          <div className="absolute top-[5.58rem] left-1/2 transform -translate-x-1/2 z-100 w-[4.5rem]">
-            <p className="text-center exo-2-font">
-              WE'VE BEEN TOGETHER FOR
-              <strong className="text-[#860000]"> {days}</strong> DAYS.
-            </p>
-            <p className="text-center exo-2-font">
-              VALENTINE'S DAY
-              <strong className="text-[#860000]"> FEB 14, 2026</strong>
-            </p>
-          </div>
-          <img className="absolute top-0 left-0 z-99" src={image05} />
-          <div className="bg-[#fff] absolute top-[1.74rem] left-1/2 transform -translate-x-1/2 z-9 w-[4.75rem] h-[3.285rem]">
-            <img className="w-full h-full" src={imageSrc} />
-          </div>
+        <img
+          className="w-full h-full absolute top-0 left-0 z-2"
+          src={image07}
+        />
+        <img className="w-full" src={imageTitle} alt="" />
+        <div className="absolute flex items-center top-[4.3rem] left-[0.4rem] text-white font-bold tracking-wide exo-2-font">
+          <span className="text-[0.35rem] leading-none">Alex</span>
+          <img src={image06} className="h-[0.35rem] mx-[0.2rem]" />
+          <span className="text-[0.35rem] leading-none">Emma</span>
         </div>
-        <div className="mt-[9.2rem] w-full h-auto px-[1rem] flex">
-          <div className="qrcode-bg w-[1.7rem] h-[1.7rem] aspect-square pt-[0.18rem] pl-[0.16rem] box-border">
-            <QRCode
-              value={link}
-              level="H"
-              style={{
-                width: '90%',
-                height: '90%',
-              }}
-              bgColor="#851615"
-              fgColor="#fff"
-            />
-          </div>
-          <div className="pl-[0.3rem] w-[5.5rem] text-[#fff] font-medium text-[0.30rem] exo-2-font">
-            <p className="mb-[0.1rem]">RESTAURANT</p>
-            <p className="flex text-[0.25rem] items-top">
-              <img
-                className="w-[0.30rem] h-[0.30rem] mr-[0.1rem]"
-                src={linkIcon}
-              />
-              <span className="inline-block w-full ellipsis">
-                www.restaurant.com
-              </span>
-            </p>
-            <p className="flex text-[0.25rem] items-top">
-              <img
-                className="w-[0.30rem] h-[0.30rem] mr-[0.1rem]"
-                src={addressIcon}
-              />
-              <span className="inline-block w-full ellipsis2">
-                9527 N Menusifu Hwysuite b, FL 00000
-              </span>
-            </p>
-          </div>
+        <div className="text-right w-[2.1rem] absolute z-3 top-[5.8rem] right-[0.4rem] text-[0.35rem] text-white exo-2-font leading-[0.45rem]">
+          Good food tastes even better together.
         </div>
-        <div className="text-[#fff] font-medium flex justify-center items-center mt-[0.5rem]">
-          <img className="h-[0.45rem]" src={logo} />
-          <img className="h-[0.25rem] mx-[0.25rem]" src={x} />
-          <span className="text-[0.35rem] exo-2-font">Example</span>
+        <div className="text-right w-[2.1rem] absolute z-3 top-[8.3rem] right-[0.4rem] text-[0.25rem] text-white exo-2-font">
+          <span className="text-[0.30rem] font-medium text-[#FEEBCF] italic">
+            SURPRISE U
+          </span>
+          <br />
+          <span className="text-[0.28rem]">
+            Scan & visit us toreceive a specialValentine's surprise
+          </span>
+        </div>
+        <div className="qrcode-bg absolute z-3 right-[0.4rem] top-[10.6rem] w-[1.7rem] h-[1.7rem] aspect-square pt-[0.16rem] pl-[0.16rem] box-border">
+          <QRCode
+            value={link}
+            level="H"
+            style={{
+              width: '90%',
+              height: '90%',
+            }}
+            bgColor="#851615"
+            fgColor="#fff"
+          />
+        </div>
+        <div className="w-full absolute left-0 top-[12.65rem] border-t border-dashed border-white text-center text-white">
+          <p className="text-[0.35rem] font-medium mt-[0.3rem] mb-[0.3rem]">
+            RESTAURANT
+          </p>
+          <img className="w-[0.35rem] mx-auto" src={addressIcon} />
+          <p className="mt-[0.1rem]">OOOO N Menusifu Hwy suite b. FL O0000</p>
+        </div>
+        <img className="w-full absolute bottom-[0.45rem] left-0" src={logo} />
+        <div className="absolute top-[4.9rem] left-[0.4rem] z-3 w-[4.5rem] text-white text-[0.25rem]">
+          <p className="exo-2-font">
+            WE'VE BEEN TOGETHER FOR
+            <strong className="text-[#FEEBCF]"> {days}</strong> DAYS.
+          </p>
+          <p className="exo-2-font">
+            VALENTINE'S DAY
+            <strong className="text-[#FEEBCF]"> FEB 14, 2026</strong>
+          </p>
         </div>
         <div
           data-html2canvas-ignore
-          className="w-[7.5rem] left-1/2 transform -translate-x-1/2 fixed z-999 bottom-[0.3rem] flex justify-between px-[0.6rem] text-[#fff] text-[0.30rem] font-medium exo-2-font"
+          className="w-[7.5rem] left-1/2 transform -translate-x-1/2 fixed z-999 bottom-0 flex justify-between px-[0.6rem] py-[0.3rem] text-[#fff] text-[0.30rem] font-medium exo-2-font backdrop-blur-md bg-white/30"
         >
           <button
             onClick={generate}
             className="w-[48%] h-[0.65rem] bg-[#AC3636] rounded-[0.35rem]"
           >
-            Download Poster
+            Generate Poster
           </button>
           <button
             onClick={share}

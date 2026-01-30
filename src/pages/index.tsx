@@ -78,7 +78,7 @@ export default function Index() {
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] leading-[0.8rem] my-[0.2rem]"
           >
             <option value="" disabled>
-              请选择
+              Please select
             </option>
             <option value="1">Food dates</option>
             <option value="2">Traveling</option>
