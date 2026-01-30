@@ -64,6 +64,11 @@ export default function Poster() {
     // window.open(url)
     setPreview(url)
     setOpen(true)
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth', // 平滑滚动
+    })
   }
 
   const share = () => {
