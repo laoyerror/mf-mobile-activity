@@ -11,38 +11,52 @@ export default function Privacy() {
         className="w-[0.55rem] h-[0.55rem] absolute top-[0.20rem] left-[0.3rem]"
       />
       <h1 className="text-center text-[0.35rem] text-[#666] font-medium mb-[0.2rem]">
-        Privacy Consent Notice
+        Privacy Notice
       </h1>
-      <h2 className="mb-[0.2rem]">
-        By participating in this Valentine’s Day experience, I understand and
-        agree that:
-      </h2>
       <ul>
         <li className="mb-[0.2rem]">
-          The names, relationship date, and photo I voluntarily submit will be
-          collected and processed by MenuSifu solely for the purpose of
-          generating my Valentine’s Day memory poster
+          <b>What we collect:</b> Your names, optional relationship date, and
+          activity preferences.
         </li>
         <li className="mb-[0.2rem]">
-          My submitted information will not be used for advertising, marketing,
-          AI model training, or any other commercial purposes.
+          <b>How we use it:</b> Only to generate your Valentine's poster. We
+          don't use this for marketing, AI training, or share it with anyone.
         </li>
         <li className="mb-[0.2rem]">
-          The information is processed through automated systems only and is not
-          manually reviewed or accessed by participating restaurants.
+          <b>Who can see it:</b> This is processed automatically. Participating
+          restaurants cannot access your information.
         </li>
         <li className="mb-[0.2rem]">
-          My data will be securely stored and automatically deleted within a
-          defined retention period after the Valentine’s Day campaign ends.
+          <b>How long we keep it:</b> All data is automatically deleted within
+          30 days after February 28, 2025.
         </li>
         <li className="mb-[0.2rem]">
-          Participating restaurants do not have access to my submitted personal
-          information.
+          <b>Your data, your choice:</b> Participation is voluntary. You can
+          request deletion anytime at{' '}
+          <a className="text-[#1447E6]" href="mailto:info@menusifu.com">
+            info@menusifu.com
+          </a>{' '}
+          or{' '}
+          <a className="text-[#1447E6]" href="tel:+12129665888">
+            (212) 966-5888
+          </a>
+          .
+        </li>
+        <li className="mb-[0.2rem]">
+          <b>Age requirement:</b> Must be 18+. For complete details, see our{' '}
+          <a
+            className="text-[#1447E6]"
+            target="_blank"
+            href="https://www.menusifu.com/privacy"
+          >
+            Privacy Policy
+          </a>
+          .
         </li>
       </ul>
       <p>
-        Participation is voluntary, and I may choose not to submit personal
-        information.
+        By continuing, you agree to this notice and our Privacy Policy and
+        confirm you are 18 years old or older.
       </p>
     </div>
   )

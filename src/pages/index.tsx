@@ -116,9 +116,8 @@ export default function Index() {
               className="h-[0.35rem] w-[0.35rem] border border-[#7E3224] mr-[0.1rem]"
             />
             <span className="text-[0.25rem] text-[#7E0F10] exo-2-font">
-              I have read and agree to{' '}
               <span onClick={jumpPrivacy} className="font-medium">
-                thePrivacy Consent Notice
+                I have read and agree to the Privacy Consent Notice
               </span>
             </span>
           </div>
