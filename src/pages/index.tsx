@@ -30,6 +30,9 @@ export default function Index() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!Object.keys(searchParams).length) {
+      alert('The page does not carry link parameters')
+    }
     if (!name || !date || !value) {
       alert('Please complete the form content')
       return
@@ -48,6 +51,13 @@ export default function Index() {
       value,
     }))
     console.log(name, date)
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'cs_custom_event',
+        custom_type: 'christmas-popup',
+        custom_action: 'start', // start/save/share
+      })
+    }
     navigate({
       to: '/poster',
     })

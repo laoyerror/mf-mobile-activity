@@ -145,7 +145,7 @@ export default function Poster() {
         </div>
         <div className="w-full absolute left-0 top-[12.65rem] border-t border-dashed border-white text-center text-white">
           <p className="text-[0.35rem] font-medium mt-[0.3rem] mb-[0.3rem]">
-            RESTAURANT
+            {state.restName}
           </p>
           <img className="w-[0.35rem] mx-auto" src={addressIcon} />
           <p className="mt-[0.1rem]">{state.restAddress}</p>
