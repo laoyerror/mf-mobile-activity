@@ -54,7 +54,7 @@ export default function Index() {
     if (window.dataLayer) {
       window.dataLayer.push({
         event: 'cs_custom_event',
-        custom_type: 'christmas-popup',
+        custom_type: 'valentines_day_activities',
         custom_action: 'start', // start/save/share
       })
     }

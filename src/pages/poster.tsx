@@ -69,9 +69,23 @@ export default function Poster() {
       left: 0,
       behavior: 'smooth', // 平滑滚动
     })
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'cs_custom_event',
+        custom_type: 'valentines_day_activities',
+        custom_action: 'save', // start/save/share
+      })
+    }
   }
 
   const share = () => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'cs_custom_event',
+        custom_type: 'valentines_day_activities',
+        custom_action: 'share', // start/save/share
+      })
+    }
     window.open('https://www.facebook.com/', '_blank')
     // window.location.href =
     //   'fb://facewebmodal/f?href=' +
