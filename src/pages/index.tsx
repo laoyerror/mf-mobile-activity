@@ -3,6 +3,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import { counterStore } from '@/stores/store'
 import logo from '@/assets/images/logo.png'
+import close from '@/assets/svg/close1.svg'
 
 export default function Index() {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ export default function Index() {
   }, [searchParams])
 
   const state = useStore(counterStore)
+  const [open, setOpen] = useState(false)
 
   const [value, setValue] = useState('')
 
@@ -38,9 +40,9 @@ export default function Index() {
     }
     counterStore.setState((prev) => ({
       ...prev,
-      orderUrl: searchParams.orderUrl,
-      restAddress: searchParams.restAddress,
-      restName: searchParams.restName,
+      orderUrl: decodeURIComponent(searchParams.orderUrl),
+      restAddress: decodeURIComponent(searchParams.restAddress),
+      restName: decodeURIComponent(searchParams.restName),
       date,
       name,
       value,
@@ -48,12 +50,6 @@ export default function Index() {
     console.log(name, date)
     navigate({
       to: '/poster',
-    })
-  }
-
-  const jumpPrivacy = () => {
-    navigate({
-      to: '/privacy',
     })
   }
 
@@ -65,12 +61,12 @@ export default function Index() {
             Couple Names
           </p>
           <p className="text-[#7E0F10] text-center exo-2-font">
-            (e.g.Alex & Emma)
+            (e.g.James & Mary)
           </p>
           <input
             type="text"
             value={name}
-            placeholder="Alex & Emma"
+            placeholder="James & Mary"
             onChange={(e) => setName(e.target.value)}
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] my-[0.2rem]"
           />
@@ -103,7 +99,6 @@ export default function Index() {
             <option value="p5">Working out</option>
             <option value="p6">Gaming</option>
             <option value="p7">Family time</option>
-            <option value="p8">Walking the dog</option>
             <option value="p9">Doing nothing, Together is enough</option>
           </select>
 
@@ -116,8 +111,13 @@ export default function Index() {
               className="h-[0.35rem] w-[0.35rem] border border-[#7E3224] mr-[0.1rem]"
             />
             <span className="text-[0.25rem] text-[#7E0F10] exo-2-font">
-              <span onClick={jumpPrivacy} className="font-medium">
-                I have read and agree to the Privacy Consent Notice
+              I have read and agree to the{' '}
+              <span
+                // onClick={jumpPrivacy}
+                onClick={() => setOpen(true)}
+                className="font-medium underline decoration-solid"
+              >
+                Privacy Consent Notice
               </span>
             </span>
           </div>
@@ -131,6 +131,65 @@ export default function Index() {
         </div>
         <div className="absolute w-[7.5rem] bottom-[0.5rem] text-[#fff] font-medium flex justify-center items-center left-1/2 transform -translate-x-1/2">
           <img className="h-[0.45rem]" src={logo} />
+        </div>
+
+        <div
+          className={`fixed z-999 bottom-0 left-1/2 bg-[#E4DEDE] w-full transform -translate-x-1/2 rounded-tl-[0.35rem] rounded-tr-[0.35rem] text-[0.30rem] p-[0.4rem] ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+        >
+          <img
+            className="absolute top-[0.25rem] right-[0.25rem] w-[0.5rem]"
+            src={close}
+            onClick={() => setOpen(false)}
+          />
+          <h1 className="text-center text-[0.35rem] text-[#666] font-medium mb-[0.2rem]">
+            Privacy Notice
+          </h1>
+          <ul>
+            <li className="mb-[0.2rem]">
+              <b>What we collect:</b> Your names, optional relationship date,
+              and activity preferences.
+            </li>
+            <li className="mb-[0.2rem]">
+              <b>How we use it:</b> Only to generate your Valentine's poster. We
+              don't use this for marketing, AI training, or share it with
+              anyone.
+            </li>
+            <li className="mb-[0.2rem]">
+              <b>Who can see it:</b> This is processed automatically.
+              Participating restaurants cannot access your information.
+            </li>
+            <li className="mb-[0.2rem]">
+              <b>How long we keep it:</b> All data is automatically deleted
+              within 30 days after February 28, 2025.
+            </li>
+            <li className="mb-[0.2rem]">
+              <b>Your data, your choice:</b> Participation is voluntary. You can
+              request deletion anytime at{' '}
+              <a className="text-[#1447E6]" href="mailto:info@menusifu.com">
+                info@menusifu.com
+              </a>{' '}
+              or{' '}
+              <a className="text-[#1447E6]" href="tel:+12129665888">
+                (212) 966-5888
+              </a>
+              .
+            </li>
+            <li className="mb-[0.2rem]">
+              <b>Age requirement:</b> Must be 18+. For complete details, see our{' '}
+              <a
+                className="text-[#1447E6]"
+                target="_blank"
+                href="https://www.menusifu.com/privacy"
+              >
+                Privacy Policy
+              </a>
+              .
+            </li>
+          </ul>
+          <p>
+            By continuing, you agree to this notice and our Privacy Policy and
+            confirm you are 18 years old or older.
+          </p>
         </div>
       </div>
     </>

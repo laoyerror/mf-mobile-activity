@@ -8,6 +8,6 @@ export function gtmPageView(pathname: string) {
   window.dataLayer = window.dataLayer || []
   window.dataLayer.push({
     event: 'cs_page_view',
-    page_path: pathname,
+    page_router: pathname,
   })
 }
