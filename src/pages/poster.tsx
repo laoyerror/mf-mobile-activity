@@ -46,7 +46,7 @@ export default function Poster() {
   const [open, setOpen] = useState(false)
   const [preview, setPreview] = useState('')
 
-  let link = state.orderUrl
+  let link = state.orderUrl + '?qrcode=true'
 
   const [name1, name2] = state.name.split(/\s*&\s*/)
 
@@ -141,8 +141,8 @@ export default function Poster() {
             SURPRISE U
           </span>
           <br />
-          <span className="text-[0.28rem]">
-            Scan & visit us toreceive a specialValentine's surprise
+          <span className="text-[0.26rem]">
+            Scan & visit us to receive a special Valentine's surprise
           </span>
         </div>
         <div className="qrcode-bg absolute z-3 right-[0.4rem] top-[10.6rem] w-[1.7rem] h-[1.7rem] aspect-square pt-[0.16rem] pl-[0.16rem] box-border">
