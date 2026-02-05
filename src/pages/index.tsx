@@ -20,6 +20,8 @@ export default function Index() {
 
   const [value, setValue] = useState('')
 
+  const today = getToday()
+
   useEffect(() => {
     console.log('state changed:', state)
   }, [state])
@@ -27,6 +29,14 @@ export default function Index() {
   const [date, setDate] = useState('')
 
   const [isAgreed, setIsAgreed] = useState(false)
+
+  function getToday() {
+    const d = new Date()
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -91,6 +101,7 @@ export default function Index() {
           <input
             type="date"
             lang="en"
+            max={today}
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="w-full text-[0.25rem] px-[0.2rem] rounded-[0.35rem] border border-[#7E3224] h-[0.8rem] my-[0.2rem]"
