@@ -16,11 +16,24 @@ import p6 from '@/assets/images/p6.png'
 import p7 from '@/assets/images/p7.png'
 import p8 from '@/assets/images/p8.png'
 import p9 from '@/assets/images/p9.png'
+import p1s from '@/assets/images/p1s.png'
+import p2s from '@/assets/images/p2s.png'
+import p3s from '@/assets/images/p3s.png'
+import p4s from '@/assets/images/p4s.png'
+import p5s from '@/assets/images/p5s.png'
+import p6s from '@/assets/images/p6s.png'
+import p7s from '@/assets/images/p7s.png'
+import p8s from '@/assets/images/p8s.png'
+import p9s from '@/assets/images/p9s.png'
 import close from '@/assets/svg/close.svg'
 
 export default function Poster() {
   const ref = useRef<HTMLDivElement>(null)
   const state = useStore(counterStore)
+
+  function randomPick<T>(arr: readonly T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)]
+  }
   const IMG_MAP = {
     p1,
     p2,
@@ -31,9 +44,22 @@ export default function Poster() {
     p7,
     p8,
     p9,
+    p1s,
+    p2s,
+    p3s,
+    p4s,
+    p5s,
+    p6s,
+    p7s,
+    p8s,
+    p9s,
   } as const
   type ImgType = keyof typeof IMG_MAP
-  let type: ImgType = state.value
+  function getRandomType(value: ImgType): ImgType {
+    const list = [value, `${value}s`] as ImgType[]
+    return randomPick(list)
+  }
+  let type: ImgType = getRandomType(state.value)
 
   const info = jsonData.filter((e: any) => e.value === state.value) || 'p9'
 
@@ -41,12 +67,14 @@ export default function Poster() {
     console.log('state changed:', state)
   }, [state])
 
-  let days: number = Math.abs(daysFromToday(state.date))
+  let days = getDiffDays(state.date)
 
   const [open, setOpen] = useState(false)
   const [preview, setPreview] = useState('')
 
-  let link = state.orderUrl + '?qrcode=true'
+  let link = state.orderUrl + '#/main?qrcode=true'
+
+  console.log(link)
 
   const [name1, name2] = state.name.split(/\s*&\s*/)
 
@@ -94,14 +122,19 @@ export default function Poster() {
     //   )
   }
 
-  function daysFromToday(dateStr: string) {
-    const [year, month, day] = dateStr.split('-').map(Number)
-    const targetDate = new Date(year, month - 1, day)
-    const today = new Date()
-    targetDate.setHours(0, 0, 0, 0)
-    today.setHours(0, 0, 0, 0)
-    const diffTime = targetDate.getTime() - today.getTime()
-    return Math.round(diffTime / (1000 * 60 * 60 * 24))
+  function getDiffDays(dateStr: string) {
+    const [y, m, d] = dateStr.split('-').map(Number)
+    // 目标日期（UTC）
+    const target = Date.UTC(y, m - 1, d)
+    // 今天（UTC）
+    const now = new Date()
+    const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())
+    // 如果目标时间 > 今天 → 返回 --
+    if (target > todayUTC) {
+      return '--'
+    }
+    // 计算天数差
+    return Math.floor((todayUTC - target) / 86400000)
   }
 
   return (

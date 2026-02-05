@@ -32,9 +32,14 @@ export default function Index() {
     e.preventDefault()
     if (!Object.keys(searchParams).length) {
       alert('The page does not carry link parameters')
+      return
     }
     if (!name || !date || !value) {
       alert('Please complete the form content')
+      return
+    }
+    if (name.indexOf('&') === -1) {
+      alert('Enter both names separated by an ampersand (&)')
       return
     }
     if (!isAgreed) {
@@ -109,6 +114,7 @@ export default function Index() {
             <option value="p5">Working out</option>
             <option value="p6">Gaming</option>
             <option value="p7">Family time</option>
+            <option value="p8">Walking</option>
             <option value="p9">Doing nothing, Together is enough</option>
           </select>
 
