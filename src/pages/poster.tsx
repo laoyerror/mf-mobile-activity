@@ -190,14 +190,17 @@ export default function Poster() {
             fgColor="#fff"
           />
         </div>
-        <div className="w-full absolute left-0 top-[12.65rem] border-t border-dashed border-white text-center text-white">
+        <div className="w-full absolute left-0 top-[12.5rem] border-t border-dashed border-white text-center text-white">
           <p className="text-[0.35rem] font-medium mt-[0.3rem] mb-[0.3rem]">
-            {state.restName}
+            {state.restName}absolute absoluteab soluteabsolut eabsolute
           </p>
           <img className="w-[0.35rem] mx-auto" src={addressIcon} />
           <p className="mt-[0.1rem]">{state.restAddress}</p>
+          <img
+            className="h-[0.45rem] w-[5rem] mx-auto mt-[0.5rem]"
+            src={logo}
+          />
         </div>
-        <img className="w-full absolute bottom-[0.45rem] left-0" src={logo} />
         <div className="absolute top-[4.9rem] left-[0.4rem] z-3 w-[4.5rem] text-white text-[0.25rem]">
           <p className="exo-2-font">
             WE'VE BEEN TOGETHER FOR
