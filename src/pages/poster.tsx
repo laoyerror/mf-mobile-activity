@@ -4,6 +4,7 @@ import { counterStore } from '@/stores/store'
 import { useStore } from '@tanstack/react-store'
 import html2canvas from 'html2canvas'
 import jsonData from '@/data/config.json'
+import { getUrlParam } from '@/utils/getParam.js'
 import imageTitle from '@/assets/images/title.png'
 import addressIcon from '@/assets/images/08.png'
 import logo from '@/assets/images/logo.png'
@@ -59,12 +60,15 @@ export default function Poster() {
     const list = [value, `${value}s`] as ImgType[]
     return randomPick(list)
   }
-  let type: ImgType = getRandomType(state.value)
+  const [type] = useState<ImgType>(() => getRandomType(state.value))
 
   const info = jsonData.filter((e: any) => e.value === state.value) || 'p9'
 
+  const mid = getUrlParam(state.orderUrl, 'mid')
+
   useEffect(() => {
     console.log('state changed:', state)
+    console.log(mid, '---mid---')
   }, [state])
 
   let days = getDiffDays(state.date)
@@ -88,20 +92,31 @@ export default function Poster() {
     const blob = await new Promise<Blob>((resolve) =>
       canvas.toBlob((b) => resolve(b!), 'image/png'),
     )
-    const url = URL.createObjectURL(blob)
-    // window.open(url)
-    setPreview(url)
-    setOpen(true)
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth', // 平滑滚动
-    })
+    const ua = navigator.userAgent
+    const mobileRegex = /Android|iPhone|iPad|iPod|Windows Phone|Mobi/i
+    const isPC = !mobileRegex.test(ua)
+    if (isPC) {
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = 'poster.png'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } else {
+      const url = URL.createObjectURL(blob)
+      setPreview(url)
+      setOpen(true)
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth', // 平滑滚动
+      })
+    }
     if (window.dataLayer) {
       window.dataLayer.push({
         event: 'cs_custom_event',
         custom_type: 'valentines_day_activities',
-        custom_action: 'save', // start/save/share
+        custom_action: 'save_' + mid, // start/save/share
       })
     }
   }
@@ -111,7 +126,7 @@ export default function Poster() {
       window.dataLayer.push({
         event: 'cs_custom_event',
         custom_type: 'valentines_day_activities',
-        custom_action: 'share', // start/save/share
+        custom_action: 'share_' + mid, // start/save/share
       })
     }
     window.open('https://www.facebook.com/', '_blank')

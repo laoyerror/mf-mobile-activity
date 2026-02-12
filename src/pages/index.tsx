@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import { counterStore } from '@/stores/store'
+import { getUrlParam } from '@/utils/getParam.js'
 import logo from '@/assets/images/logo.png'
 import close from '@/assets/svg/close1.svg'
 
@@ -11,8 +12,18 @@ export default function Index() {
   const searchParams: any = useSearch({
     from: '/',
   })
+
+  let mid: string | null = getUrlParam(searchParams.orderUrl, 'mid')
+
   useEffect(() => {
     console.log('searchParams changed:', searchParams)
+    console.log(mid, '===mid===')
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      event: 'cs_custom_event',
+      custom_type: 'valentines_day_activities',
+      custom_action: 'init_' + mid, // start/save/share
+    })
   }, [searchParams])
 
   const state = useStore(counterStore)
@@ -39,6 +50,8 @@ export default function Index() {
   }
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log(mid, '0-0-0-0-mid')
+
     e.preventDefault()
     if (!Object.keys(searchParams).length) {
       alert('The page does not carry link parameters')
@@ -70,7 +83,7 @@ export default function Index() {
       window.dataLayer.push({
         event: 'cs_custom_event',
         custom_type: 'valentines_day_activities',
-        custom_action: 'start', // start/save/share
+        custom_action: 'start_' + mid, // start/save/share
       })
     }
     navigate({
